@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbx.campusconnect.mapper.UserAuditMapper">
+    <!-- sql -->
+    <select id="getUserAudit" resultType="com.hbx.campusconnect.pojo.UserAuditRecord">
+        select
+            ua.id,
+            ua.user_id,
+            ua.admin_id,
+            ua.action,
+            ua.reason,
+            ua.created_at as ops_created_at,
+            u.username,
+            u.email,
+            u.role,
+            u.user_avatar,
+            u.created_at as user_created_at,
+            u.user_status,
+            a.username as admin_name,
+            a.user_avatar as admin_avatar
+        from user_audit ua
+        LEFT JOIN users u ON ua.user_id = u.id
+        LEFT JOIN users a ON ua.admin_id = a.id
+        <where>
+            <if test="action != null">
+                AND ua.action = #{action}
+            </if>
+            <if test="adminName != null and adminName != ''">
+                AND a.username LIKE CONCAT('%', #{adminName}, '%')
+            </if>
+        </where>
+        ORDER BY ops_created_at
+        <choose>
+            <when test="order == 'asc' or order == 'ASC'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

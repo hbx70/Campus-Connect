@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbx.campusconnect.mapper.PostAuditMapper">
+    <!-- sql -->
+    <select id="getPostAudit" resultType="com.hbx.campusconnect.pojo.PostAuditRecord">
+        select
+            pa.*,
+            p.title,
+            u.username,
+            u.user_avatar,
+            a.username as adminName,
+            a.user_avatar as adminAvatar
+        from post_audit pa
+        left join posts p on pa.post_id = p.id
+        left join users u on p.user_id = u.id
+        left join users a on pa.admin_id = a.id
+        <where>
+            <if test="action!=null">
+                AND pa.action=#{action}
+            </if>
+            <if test="adminName != null and adminName != ''">
+                AND a.username LIKE CONCAT('%', #{adminName}, '%')
+            </if>
+        </where>
+        ORDER BY pa.created_at
+        <choose>
+            <when test="order == 'asc' or order == 'ASC'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

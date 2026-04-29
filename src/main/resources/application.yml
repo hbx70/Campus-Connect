@@ -1,0 +1,41 @@
+spring:
+    servlet:
+        multipart:
+            max-file-size: 5MB
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+    data:
+        redis:
+            host: ${REDIS_HOST}
+            port: ${REDIS_PORT}
+    mail:
+        host: smtp.163.com
+        port: 465
+        username: ${MAIL_USERNAME}
+        password: ${MAIL_PASSWORD}
+        default-encoding: UTF-8
+        properties:
+          mail:
+              smtp:
+                  auth: true
+                  ssl:
+                      enable: true
+
+r2:
+    accountId: ${R2_ACCOUNT_ID}
+    accessKey: ${R2_ACCESS_KEY}
+    secretKey: ${R2_SECRET_KEY}
+    bucket: ${R2_BUCKET}
+    publicBaseUrl: https://img.campusconnect.one
+
+
+
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
+
+    mapper-locations: classpath:mapper/*.xml
+

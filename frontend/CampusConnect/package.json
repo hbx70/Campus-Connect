@@ -1,0 +1,41 @@
+{
+  "name": "campusconnect",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "@emoji-mart/data": "^1.2.1",
+    "@tiptap/extension-emoji": "^3.22.0",
+    "@tiptap/extension-file-handler": "^3.22.0",
+    "@tiptap/extension-image": "^3.21.0",
+    "@tiptap/extension-link": "^3.22.0",
+    "@tiptap/extension-placeholder": "^3.21.0",
+    "@tiptap/extension-subscript": "^3.22.0",
+    "@tiptap/extension-superscript": "^3.22.0",
+    "@tiptap/extension-text-align": "^3.21.0",
+    "@tiptap/starter-kit": "^3.21.0",
+    "@tiptap/vue-3": "^3.21.0",
+    "dayjs": "^1.11.19",
+    "dompurify": "^3.3.3",
+    "element-plus": "^2.13.1",
+    "emoji-mart": "^5.6.0",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.3",
+    "vite": "^7.3.1",
+    "vite-plugin-vue-devtools": "^8.0.5"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

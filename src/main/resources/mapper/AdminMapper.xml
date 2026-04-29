@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbx.campusconnect.mapper.AdminMapper">
+    <!-- sql -->
+    <select id="getAllUserInfo" resultType="com.hbx.campusconnect.pojo.User">
+        select id, username, email, role, user_avatar, created_at, user_status
+        from users
+        <where>
+            <if test="role!=null">
+                AND role=#{role}
+            </if>
+            <if test="status != null">
+                AND user_status = #{status}
+            </if>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+        </where>
+        ORDER BY created_at
+        <choose>
+            <when test="order == 'asc' or order == 'ASC'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getAllPostInfo" resultType="com.hbx.campusconnect.pojo.PostList">
+        select
+            p.*,
+            u.username,
+            u.user_avatar,
+            u.role,
+            u.user_status
+        from posts p
+        left join users u on p.user_id = u.id
+        <where>
+            <if test="type!=null">
+                AND p.type=#{type}
+            </if>
+            <if test="status != null">
+                AND p.status = #{status}
+            </if>
+            <if test="username != null and username != ''">
+                AND u.username LIKE CONCAT('%', #{username}, '%')
+            </if>
+        </where>
+        ORDER BY p.created_at
+        <choose>
+            <when test="order == 'asc' or order == 'ASC'">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>
