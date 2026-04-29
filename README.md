@@ -1,5 +1,7 @@
 # Campus Connect
 
+![Screenshot](assets/images/homePage.png)
+
 A full-stack campus community platform that enables users to create, share, and moderate content within a structured and secure environment.
 
 ---
