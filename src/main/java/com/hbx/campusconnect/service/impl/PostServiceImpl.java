@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -161,17 +162,17 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void approvePost(Integer postId) throws MessagingException {
+    public void approvePost(Integer postId) throws MessagingException, IOException {
         this.updatePostStatus(postId, PostAduit.PostAuditAction.APPROVED, "approved");
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void rejectPost(PostAduit postAduit) throws MessagingException {
+    public void rejectPost(PostAduit postAduit) throws MessagingException, IOException {
         this.updatePostStatus(postAduit.getPostId(), PostAduit.PostAuditAction.REJECTED, postAduit.getReason());
     }
 
-    private void updatePostStatus(Integer postId, PostAduit.PostAuditAction status, String reason) throws MessagingException {
+    private void updatePostStatus(Integer postId, PostAduit.PostAuditAction status, String reason) throws MessagingException, IOException {
         Post post = postMapper.findPostById(postId);
         if (post == null || post.getStatus().name().equals(status.name())) {
             throw new RuntimeException("post dose not exist or has been " + status.name());

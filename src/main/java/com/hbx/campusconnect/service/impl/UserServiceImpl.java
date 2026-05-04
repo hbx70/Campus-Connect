@@ -90,14 +90,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendEmailOTP(String email) throws MessagingException {
+    public void sendEmailOTP(String email) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String otp = this.generateAndStoreOTP(email, "register");
         emailService.sendOTPEmailBuilder(email, otp, LocalDateTime.now().format(formatter));
     }
 
     @Override
-    public void sendEmailChangedCode(String email) throws MessagingException {
+    public void sendEmailChangedCode(String email) throws IOException {
         String otp = this.generateAndStoreOTP(email, "changeEmail");
         Map<String, Object> claims = ThreadLocalUtil.get();
         Integer loginUserId = (Integer) claims.get("id");
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendAccountHelpOTP(String email) throws MessagingException {
+    public void sendAccountHelpOTP(String email) throws IOException {
         User user = userMapper.findUserByEmail(email);
         if (user == null) {
             throw new RuntimeException("This email has not been registered");

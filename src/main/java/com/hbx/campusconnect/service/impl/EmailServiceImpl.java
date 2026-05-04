@@ -1,68 +1,74 @@
 package com.hbx.campusconnect.service.impl;
 
 import com.hbx.campusconnect.service.EmailService;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
-    private org.springframework.core.env.Environment env;
 
     private static final String LOGO_URL = "https://img.campusconnect.one/avatars/logo.png";
 
+    @Value("${sendgrid.api-key}")
+    private String apiKey;
+
     @Override
-    public void sendOTPEmailBuilder(String toEmail, String code, String requestTime) throws MessagingException {
+    public void sendOTPEmailBuilder(String toEmail, String code, String requestTime) throws IOException {
         String title = "Email Verification Code";
         String html = buildVerifyEmailHtml(code, requestTime);
         this.sendEmailHandler(toEmail, title, html);
     }
 
     @Override
-    public void sendUpdateEmailEBuilder(String username, String toEmail, String code, String requestTime) throws MessagingException {
+    public void sendUpdateEmailEBuilder(String username, String toEmail, String code, String requestTime) throws IOException {
         String title = "Email Verification Code";
         String html = buildVerifyEmailChangeHtml(username, toEmail, code, requestTime);
         this.sendEmailHandler(toEmail, title, html);
     }
 
     @Override
-    public void sendNoticeEmailBuilder(String toEmail, String username, String postTitle, String decision, String decisionTime, String reason) throws MessagingException {
+    public void sendNoticeEmailBuilder(String toEmail, String username, String postTitle, String decision, String decisionTime, String reason) throws IOException {
         String title = "Post Review " + ("APPROVED".equalsIgnoreCase(decision) ? "Approved" : "Rejected");
         String html = buildNoticeEmailHtml(username, postTitle, decision, decisionTime, reason);
         this.sendEmailHandler(toEmail, title, html);
     }
 
     @Override
-    public void sendAccountHelpOTP(String username, String toEmail, String otp, String requestTime) throws MessagingException {
+    public void sendAccountHelpOTP(String username, String toEmail, String otp, String requestTime) throws IOException {
         String title = "Email Verification Code";
         String html = buildPasswordChangedHtml(username, otp, requestTime);
         this.sendEmailHandler(toEmail, title, html);
     }
 
-    private void sendEmailHandler(String toEmail, String title, String html) throws MessagingException {
-        String from = env.getProperty("spring.mail.username");
-        String subject = "CampusConnect - " + title;
+    public void sendEmailHandler(String to, String subject, String html) throws IOException {
 
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        Email from = new Email("campus_connect@163.com");
+        Email toEmail = new Email(to);
 
-        helper.setFrom("CampusConnect <" + from + ">");
-        helper.setTo(toEmail);
-        helper.setSubject(subject);
-        helper.setText(html, true);
-        mailSender.send(mimeMessage);
+        Content content = new Content("text/html", html);
+        Mail mail = new Mail(from, subject, toEmail, content);
+
+        SendGrid sg = new SendGrid(apiKey);
+
+        Request request = new Request();
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        request.setBody(mail.build());
+
+        Response response = sg.api(request);
     }
 
     private String buildNoticeEmailHtml(String username, String postTitle, String decision, String decisionTime, String reason) {
 
-//        String logoUrl = "https://img.campusconnect.one/assets/logo.png"; // 你的R2 Logo地址
         boolean approved = "APPROVED".equalsIgnoreCase(decision);
 
         String decisionText = approved ? "Approved" : "Rejected";

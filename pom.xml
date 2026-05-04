@@ -107,6 +107,12 @@
             <version>20211018.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sendgrid</groupId>
+            <artifactId>sendgrid-java</artifactId>
+            <version>4.10.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

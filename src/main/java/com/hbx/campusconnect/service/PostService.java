@@ -6,6 +6,7 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public interface PostService {
@@ -22,10 +23,10 @@ public interface PostService {
     void deletePost(@NotNull Integer id, String reason) throws JsonProcessingException;
 
     // approve post by id
-    void approvePost(@NotNull Integer postId) throws MessagingException;
+    void approvePost(@NotNull Integer postId) throws MessagingException, IOException;
 
     // reject post by id
-    void rejectPost(PostAduit postAduit) throws MessagingException;
+    void rejectPost(PostAduit postAduit) throws MessagingException, IOException;
 
     // participate / like the post
     void participatePost(@NotNull(message = "post id cannot be null or empty") Integer postId);

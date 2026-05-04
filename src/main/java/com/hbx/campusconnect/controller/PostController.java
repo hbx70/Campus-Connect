@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 @RestController
@@ -46,13 +47,13 @@ public class PostController {
     }
 
     @PatchMapping("/approve")
-    public Result approvePost(@NotNull Integer postId) throws MessagingException {
+    public Result approvePost(@NotNull Integer postId) throws MessagingException, IOException {
         postService.approvePost(postId);
         return Result.success();
     }
 
     @PatchMapping("/reject")
-    public Result rejectPost(@Valid @RequestBody PostAduit postAduit) throws MessagingException {
+    public Result rejectPost(@Valid @RequestBody PostAduit postAduit) throws MessagingException, IOException {
         postService.rejectPost(postAduit);
         return Result.success();
     }

@@ -40,19 +40,19 @@ public class UserController {
 
     // send opt
     @PostMapping("/email/register")
-    public Result<String> sendEmailOTP (@Validated @RequestParam(required = true) @Email @NotBlank String email) throws MessagingException {
+    public Result<String> sendEmailOTP (@Validated @RequestParam(required = true) @Email @NotBlank String email) throws MessagingException, IOException {
         userService.sendEmailOTP(email);
         return Result.success("verification code sent");
     }
 
     @PostMapping("/email/change")
-    public Result<String> sendEmailChangeOTP (@Validated @RequestParam(required = true) @Email @NotBlank String email) throws MessagingException {
+    public Result<String> sendEmailChangeOTP (@Validated @RequestParam(required = true) @Email @NotBlank String email) throws MessagingException, IOException {
         userService.sendEmailChangedCode(email);
         return Result.success("verification code sent");
     }
 
     @PostMapping("/email/account")
-    public Result<String> sendAccountHelpOTP(@Validated @RequestParam @Email @NotBlank String email) throws MessagingException {
+    public Result<String> sendAccountHelpOTP(@Validated @RequestParam @Email @NotBlank String email) throws MessagingException, IOException {
         userService.sendAccountHelpOTP(email);
         return Result.success("verification code sent");
     }

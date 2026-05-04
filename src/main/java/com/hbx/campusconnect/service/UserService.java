@@ -28,7 +28,7 @@ public interface UserService {
     User findUserByEmail(@NotBlank(message = "email cannot be empty") @Email(message = "please enter correct email address") String email);
 
     // send OTP by email
-    void sendEmailOTP(@Email @NotBlank String email) throws MessagingException;
+    void sendEmailOTP(@Email @NotBlank String email) throws MessagingException, IOException;
 
     // upload user avatar
     String uploadAvatar(MultipartFile file) throws IOException;
@@ -43,7 +43,7 @@ public interface UserService {
     void activeUser(@NotNull Integer userId);
 
     // get email change code
-    void sendEmailChangedCode(@NotBlank String email) throws MessagingException;
+    void sendEmailChangedCode(@NotBlank String email) throws MessagingException, IOException;
 
     // update user email checking
     void updateUserEmailCheck(@Valid @NotBlank(message = "email cannot be blank") String email);
@@ -55,7 +55,7 @@ public interface UserService {
     void updateUserEmail(@NotBlank String newEmail, @NotBlank @Size(min = 6, max = 6) String otp);
 
     // get change password code
-    void sendAccountHelpOTP(@Email @NotBlank String email) throws MessagingException;
+    void sendAccountHelpOTP(@Email @NotBlank String email) throws MessagingException, IOException;
 
     // update user password
     void updateUserPassword(@NotNull String newPassword, @NotBlank String accHelpToken);
